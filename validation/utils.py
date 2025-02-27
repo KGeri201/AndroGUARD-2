@@ -3,7 +3,6 @@
 """Module providing a function printing python version."""
 
 import os
-import numpy as np
 import pandas as pd
 
 FREQUENCY = '250ms'
@@ -102,8 +101,9 @@ def load_data(path: str, target: str = None) -> pd.DataFrame:
         # if tmp.shape[1] != NR_FEATURES:
             # tmp.resize(tmp.shape) #tmp = np.resize(tmp, (tmp.shape[0], NR_FEATURES))
         tmp.insert(tmp.shape[1], 'label', filename)
-        features = pd.concat([features, tmp], ignore_index=True, axis=0) if features is not None else tmp
+        features = pd.concat([features, tmp], ignore_index=True,
+                             axis=0) if features is not None else tmp
         if path.endswith('.csv'):
             break
 
-    return features #, targets
+    return features  # , targets
