@@ -36,7 +36,7 @@ def read_csv_file(file: str, delimiter: str = ';') -> pd.DataFrame:
         file, delimiter=delimiter, usecols=(TIME_COL,) + SENSORS[os.path.split(file)[1]])
 
 
-def combine_features(path: str, output: str = None) -> np.ndarray:
+def combine_features(path: str, output: str = None) -> pd.DataFrame:
     """
     Combines CSV files contained in a folder.
 
@@ -46,7 +46,7 @@ def combine_features(path: str, output: str = None) -> np.ndarray:
                       no data will be saved. Defaults to None.
 
     Returns:
-        np.ndarray: numpy array of the combined CSVs without the header.
+        pd.DataFrame: pandes Dataframe of the combined CSVs with the header.
     """
 
     if not os.path.exists(path):
@@ -68,14 +68,14 @@ def combine_features(path: str, output: str = None) -> np.ndarray:
 
     # features = features.groupby(pd.Grouper(
     #     key=TIME_COL, freq=FREQUENCY)).mean()
-    features = features.drop(TIME_COL, axis=1)
+    # features = features.drop(TIME_COL, axis=1)
     features = features.dropna()
     if output is not None:
         features.to_csv(output)
-    return features.to_numpy()
+    return features
 
 
-def load_data(path: str, target: str = None) -> tuple[np.ndarray, np.ndarray]:
+def load_data(path: str, target: str = None) -> pd.DataFrame:
     """
     Parses CSV files contained in any subfolder of the given directory.
 
@@ -88,7 +88,7 @@ def load_data(path: str, target: str = None) -> tuple[np.ndarray, np.ndarray]:
                                        parsed and combined data from the CSVs and the targets.
     """
     features = None
-    targets = np.zeros(shape=(1, 0))
+    # targets = np.zeros(shape=(1, 0))
     files = path if path.endswith('.csv') else [file for file in os.listdir(
         path) if os.path.isdir(os.path.join(path, file))]
     if not files:
@@ -99,12 +99,11 @@ def load_data(path: str, target: str = None) -> tuple[np.ndarray, np.ndarray]:
             path, filename, target))
         if tmp is None:
             continue
-        if tmp.shape[1] != NR_FEATURES:
-            tmp = np.resize(tmp, (tmp.shape[0], NR_FEATURES))
-        features = np.vstack((features, tmp)) if features is not None else tmp
-        targets = np.concatenate(
-            (targets, np.full((tmp.shape[0], 1), filename)), axis=None)
+        # if tmp.shape[1] != NR_FEATURES:
+            # tmp.resize(tmp.shape) #tmp = np.resize(tmp, (tmp.shape[0], NR_FEATURES))
+        tmp.insert(tmp.shape[1], 'label', filename)
+        features = pd.concat([features, tmp], ignore_index=True, axis=0) if features is not None else tmp
         if path.endswith('.csv'):
             break
 
-    return features, targets
+    return features #, targets

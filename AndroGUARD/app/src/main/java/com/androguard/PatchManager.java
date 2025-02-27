@@ -145,12 +145,12 @@ public class PatchManager {
         OriginalMethods.android_hardware_SensorManager.unregisterListener(sm, removeListener(listener, sensor), sensor);
     }
 
-    /**
-     * ...
-     * @see OriginalMethods
-     * @see PatchClass
-     * @see PatchInstanceMethod
-     */
+//    /**
+//     * ...
+//     * @see OriginalMethods
+//     * @see PatchClass
+//     * @see PatchInstanceMethod
+//     */
 //    @PatchClass("android.app.Activity")
 //    @PatchInstanceMethod
 //    public static void setContentView(Activity thiz, View view, ViewGroup.LayoutParams params) {
@@ -168,7 +168,7 @@ public class PatchManager {
     @PatchInstanceMethod
     public static void setContentView(Activity thiz, View view) {
         OriginalMethods.android_app_Activity.setContentView(thiz, view);
-        PatchCalibration.showDialog(thiz);
+        PatchCalibration.run(thiz);
     }
 
     /**
@@ -181,6 +181,6 @@ public class PatchManager {
     @PatchInstanceMethod
     public static void setContentView(Activity thiz, @LayoutRes int layoutResID) {
         OriginalMethods.android_app_Activity.setContentView(thiz, layoutResID);
-        PatchCalibration.showDialog(thiz);
+        PatchCalibration.run(thiz);
     }
 }

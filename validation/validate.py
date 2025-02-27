@@ -16,8 +16,8 @@ class Classifier:
     parser = None
 
     def __init__(self,
-                parser: argparse.ArgumentParser = argparse.ArgumentParser()
-                ) -> None:
+                 parser: argparse.ArgumentParser = argparse.ArgumentParser()
+                 ) -> None:
         """
         Adds arguments to the program call.
         """
@@ -39,14 +39,15 @@ class Classifier:
                             default='knn',
                             choices=['knn', 'rf'],
                             help='Input file or folder')
-        
+
         self.parser = parser
 
-    def _run(path: str,
-            target: str,
-            classifier: str = 'knn',
-            gridsearch: bool = True
-            ) -> KNeighborsClassifier | RandomForestClassifier:
+    def _run(self,
+             path: str,
+             target: str,
+             classifier: str = 'knn',
+             gridsearch: bool = True
+             ) -> KNeighborsClassifier | RandomForestClassifier:
         """
         Loads the data of the given directory and trains a KNN classification algorithm, 
         then tests the accuracy. 
@@ -60,7 +61,9 @@ class Classifier:
         Returns:
             Classifier: model trained on the dataset.
         """
-        x, y = load_data(path, target)
+        df = load_data(path, target)
+        x = df.iloc[:,1:-1].to_numpy().astype('float32')
+        y = df.iloc[:,-1].to_numpy().astype('str')
 
         x_train, x_test, y_train, y_test = train_test_split(
             x, y, test_size=0.3, random_state=42)
@@ -87,7 +90,8 @@ class Classifier:
             if param_grid is None:
                 raise ValueError("Parameters for GridSearch are not set.")
 
-            grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+            grid_search = GridSearchCV(
+                model, param_grid, cv=5, scoring='accuracy')
             grid_search.fit(x_train, y_train)
             best_model = grid_search.best_estimator_
         else:
@@ -104,19 +108,27 @@ class Classifier:
         print(classification_report(y_test, y_pred))
 
         return best_model
-        
 
-    def run(self, 
+    def run(self,
             args: argparse.Namespace = None
             ) -> KNeighborsClassifier | RandomForestClassifier:
         """
+        Loads the data of the given directory and trains a KNN classification algorithm, 
+        then tests the accuracy. 
+
+        Args:
+            args (argparse.Namespace): Argumentlist containing the given parameter
+            if None is provided the stored argument parser will be used.
+
+        Returns:
+            Classifier: model trained on the dataset.
         """
         if args is None:
             args = self.parser.parse_args()
 
-        return self._run(path=args.path, 
-                        target=args.target, 
-                        classifier=args.classifier)
+        return self._run(path=args.path,
+                         target=args.target,
+                         classifier=args.classifier)
 
 
 if __name__ == "__main__":

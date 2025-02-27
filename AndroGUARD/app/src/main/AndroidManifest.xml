@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:patch="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.androguard">
 
     <patch:add sel="manifest">
         <meta-data android:name="patched" android:value="true" />
     </patch:add>
+
+<!--    <patch:add sel="manifest">-->
+<!--        <uses-permission-->
+<!--            android:name="android.permission.READ_EXTERNAL_STORAGE"-->
+<!--            android:maxSdkVersion="32" />-->
+
+<!--        <uses-permission-->
+<!--            android:name="android.permission.WRITE_EXTERNAL_STORAGE"-->
+<!--            android:maxSdkVersion="29" />-->
+
+<!--        <uses-permission-->
+<!--            android:name="android.permission.MANAGE_EXTERNAL_STORAGE"-->
+<!--            tools:ignore="WrongManifestParent" />-->
+<!--    </patch:add>-->
 </manifest>

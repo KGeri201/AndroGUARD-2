@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: AndroGUARD/
+    working-directory: AndroGUARD
 
 jobs:
   build:
