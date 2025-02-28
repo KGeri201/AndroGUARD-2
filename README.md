@@ -4,10 +4,17 @@ Implement a patch for individual apps to mitigate sensor based fingerprinting.
 ## Description
 It is a further development of [my bachelor's project and thesis](https://github.com/KGeri201/AndroGUARD).  
 It is about concealing the inherent error values of built-in sensors in mobile devices, by correcting them, to mitigate fingerprinting attempts.
-Patching apps with the created mechanism, using the [A2P2 Framework](https://extgit.iaik.tugraz.at/fdraschbacher/a2p2), obscures the true error values. 
+Patching apps with the created mechanism, using the [A2P2 Framework](https://extgit.iaik.tugraz.at/fdraschbacher/a2p2), obscures the true error values.
 
 ## Concept
-...
+Apps can be fingerprinted based on the calibration error of the sensors within[*](https://github.com/KGeri201/AndroGUARD/blob/main/thesis/thesis.pdf).  
+We mask these errors by recalibrationg the sensors and using these values for the patched apps.  
+At the start of the app a calibration window pops up, if there is no calibration file found.  
+This makes it possible to calibrate the device only once, and not for every patched app individually.  
+We use a very simple method to calibrate the sensors.  
+The device has to placed on a flat surface and the difference between the expected values of 0 and the measured values are recorded and stored in a configuration file readable by any other patched app.
+Then this error is subtracted from the raw values.  
+This reduces the error and brings the values of different devices closer together to make them more difficult to distinguish.
 
 ## Prerequisits
 - [Java 17](https://adoptium.net/de/temurin/releases/?version=17) installed *- A2P2 jar works on Linux, might not work on Windows.*
