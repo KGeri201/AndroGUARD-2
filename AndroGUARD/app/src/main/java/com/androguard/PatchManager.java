@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 
 import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 
@@ -155,7 +156,7 @@ public class PatchManager {
 //    @PatchInstanceMethod
 //    public static void setContentView(Activity thiz, View view, ViewGroup.LayoutParams params) {
 //        OriginalMethods.android_app_Activity.setContentView(thiz, view, params);
-//        Calibration.showDialog(thiz.getApplicationContext());
+//        PatchCalibration.run(thiz);
 //    }
 
     /**
