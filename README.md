@@ -1,3 +1,6 @@
+> [!WARNING]
+> Project got renamed and moved to [SensorGUARD](https://github.com/KGeri201/SensorGUARD)
+
 # AndroGUARD-2
 Implement a patch for individual apps to mitigate sensor based fingerprinting.
 
